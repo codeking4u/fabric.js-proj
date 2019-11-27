@@ -64,16 +64,20 @@ canvas.on('mouse:down', function(options) {
   canvas.setActiveObject(canvas.item(canvas.getObjects().length-1));
   }else{
     var grp = canvas.getActiveObject(); 
+    console.log(canvas.getActiveObject().get('type'));
+    if(canvas.getActiveObject().get('type')=="group"){
     grp.on('mousedown', fabricDblClick(grp, function (obj) {
-    ungroup(grp);
-    canvas.setActiveObject(grp._objects[1]);
-    grp._objects[1].enterEditing();
-    grp._objects[1].selectAll();
-    //grp._objects[1].lockMovementX = true;
-    //grp._objects[1].lockMovementY = true;
+      ungroup(grp);
+      canvas.setActiveObject(grp._objects[1]);
+      grp._objects[1].enterEditing();
+      grp._objects[1].selectAll();
+      grp._objects[1].lockMovementX = true;
+      grp._objects[1].lockMovementY = true;
+  }));
+  }
 
-}));
-
+  var left_val =grp.left;
+var top_val = grp.top;
 grp._objects[1].on("editing:exited", () => {
   var items = [];
   grp._objects.forEach(function(obj) {
@@ -82,8 +86,8 @@ grp._objects[1].on("editing:exited", () => {
   });
   const newTextGroup = new fabric.Group(items, {
     //subTargetCheck: true
-    left: options.e.offsetX-30,
-	  top: options.e.offsetY-30,
+    left: left_val,
+	  top: top_val,
   });
   canvas.add(newTextGroup);
    /* newTextGroup.on(
@@ -143,6 +147,8 @@ function (e) {
     });
 
 */
+
+
 $('#delete_selected').click(function(){
   canvas.remove(canvas.getActiveObject());
 });
