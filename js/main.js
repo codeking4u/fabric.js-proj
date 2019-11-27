@@ -22,7 +22,7 @@ canvas.setBackgroundImage(imageUrl, canvas.renderAll.bind(canvas), {
 });
   
 canvas.on('mouse:down', function(options) {
-  console.log(options);
+  //console.log(options);
  if (options.target ==undefined ) {
  /* canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: options.e.offsetY-15, left: options.e.offsetX-15,stroke: 'red',
 	strokeWidth: 3 }));
@@ -42,7 +42,7 @@ canvas.on('mouse:down', function(options) {
   var cic1 =new fabric.Circle({ radius: 30, fill: '#f55', top: options.e.offsetY-15, left: options.e.offsetX-15,stroke: 'red',
 	strokeWidth: 3 });
   
-  var text1 = new fabric.Text('25', {
+  var text1 = new fabric.IText('25', {
 	  fontSize: 30,
     textAlign: 'center',
         originX: 'center',
@@ -53,7 +53,7 @@ canvas.on('mouse:down', function(options) {
   var group = new fabric.Group([ cic1,text1  ], {
 	  left: options.e.offsetX-30,
 	  top: options.e.offsetY-30,
-	});
+  });
   canvas.add(group);
   canvas.item(canvas.getObjects().length-1).set({
     borderColor: 'red',
@@ -62,16 +62,87 @@ canvas.on('mouse:down', function(options) {
     transparentCorners: false
   });
   canvas.setActiveObject(canvas.item(canvas.getObjects().length-1));
+  }else{
+    var grp = canvas.getActiveObject(); 
+    grp.on('mousedown', fabricDblClick(grp, function (obj) {
+    ungroup(grp);
+    canvas.setActiveObject(grp._objects[1]);
+    grp._objects[1].enterEditing();
+    grp._objects[1].selectAll();
+    //grp._objects[1].lockMovementX = true;
+    //grp._objects[1].lockMovementY = true;
+
+}));
+
+grp._objects[1].on("editing:exited", () => {
+  var items = [];
+  grp._objects.forEach(function(obj) {
+    items.push(obj);
+    canvas.remove(obj);
+  });
+  const newTextGroup = new fabric.Group(items, {
+    //subTargetCheck: true
+    left: options.e.offsetX-30,
+	  top: options.e.offsetY-30,
+  });
+  canvas.add(newTextGroup);
+   /* newTextGroup.on(
+    "mousedown",
+    fabricDblClick(newTextGroup, obj => {
+      ungroup(newTextGroup);
+    })
+  );  */
+});
+
   }
   
   
 });
 
+var fabricDblClick = function (obj, handler) {
+  return function () {
+      if (obj.clicked) handler(obj);
+      else {
+          obj.clicked = true;
+          setTimeout(function () {
+              obj.clicked = false;
+          }, 500);
+      }
+  };
+};
 
+var ungroup = function (group) {
+  items = group._objects;
+  //group._restoreObjectsState();
+  canvas.remove(group);
+  for (var i = 0; i < items.length; i++) {
+      canvas.add(items[i]);
+      //console.log(items[i]);
+  }
+  
+  // if you have disabled render on addition
+  canvas.renderAll();
+};
 /* $(window).bind("load", function(){
   var w = $(window).width();
   var h = $(window).height();
 
   $("#c").css("width", w + "px");
   $("#c").css("height","auto"); 
-}); */
+}); 
+
+document.getElementById('clone').addEventListener('click',
+function (e) {
+        var obj = canvas.getActiveObject();
+        if (!obj) return;
+        var clone = obj.clone();
+        clone.set({
+        top: clone.get('top') + 150
+        });
+        canvas.add(clone);
+    });
+
+*/
+$('#delete_selected').click(function(){
+  canvas.remove(canvas.getActiveObject());
+});
