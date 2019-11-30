@@ -11,18 +11,17 @@ background.src = "img/img.png";
 background.onload = function(){
     ctx.drawImage(background,0,0);   
 } */
-var imageUrl = "img/img2.jpg";
+/* var imageUrl = "img/img.png";
 
 // Define 
-canvas.setBackgroundImage(imageUrl, canvas.renderAll.bind(canvas), {
+ canvas.setBackgroundImage(imageUrl, canvas.renderAll.bind(canvas), {
     // Optionally add an opacity lvl to the image
     backgroundImageOpacity: 1,
     // should the image be resized to fit the container?
     backgroundImageStretch: true
-});
-  
+}); 
+   */
 canvas.on('mouse:down', function(options) {
-  //console.log(options);
  if (options.target ==undefined ) {
  /* canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: options.e.offsetY-15, left: options.e.offsetX-15,stroke: 'red',
 	strokeWidth: 3 }));
@@ -40,9 +39,13 @@ canvas.on('mouse:down', function(options) {
   
   
   var cic1 =new fabric.Circle({ radius: 30, fill: '#f55', top: options.e.offsetY-15, left: options.e.offsetX-15,stroke: 'red',
-	strokeWidth: 3 });
+  strokeWidth: 3 });
+  var number=1;
+  if(canvas.getObjects().length){
+     number =canvas.getObjects().length+1;
+  }
   
-  var text1 = new fabric.IText('25', {
+  var text1 = new fabric.IText(number.toString(), {
 	  fontSize: 30,
     textAlign: 'center',
         originX: 'center',
@@ -151,4 +154,78 @@ function (e) {
 
 $('#delete_selected').click(function(){
   canvas.remove(canvas.getActiveObject());
+  canvas.renderAll();
+});
+
+$('#save_can').on('click',function(){
+  var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling']);
+  save_can(json,0)
+});
+$('#save_can2').on('click',function(){
+  var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling']);
+  save_can(json,1);
+});
+$('.previous').on('click',function(e){
+  e.preventDefault();
+  if ('referrer' in document) {
+    window.location = document.referrer;
+  } else {
+      window.history.back();
+  }
+});
+
+function save_can(json,type){
+  var json_data = JSON.stringify(json);
+  var id= $('.datajson.active').attr('data-id');
+  $.ajax({ 
+      type      : 'POST',
+      url       : 'function.php?action=save_can',
+      data      : {myData:json_data,id:id},
+      success   : function(res) {
+          //var result = $.parseJSON(res);
+          load_can();	
+          alert('Saved !');
+          if(type==1){
+            $('.previous').trigger('click');
+          }
+      }
+  });
+  
+}
+
+function load_can(){
+  var id= $('.datajson.active').attr('data-id');
+  $.ajax({ 
+      type      : 'POST',
+      url       : 'function.php?action=get_can',
+      success   : function(res) {
+          //var result = $.parseJSON(res);	
+          $('.listing').html(res);
+      }
+  });
+}
+$(document).on('click','.datajson',function(e){
+  $('.datajson').removeClass('active');
+  $(this).addClass('active');
+  var json= $(this).attr('data-json');
+  var id= $(this).attr('data-id');
+  
+  canvas.loadFromJSON(json, function() {
+    canvas.renderAll.bind(canvas) 
+ },function(o,object){
+  canvas.renderAll();
+ })
+ //canvas.deactivateAll();
+//canvas.selection = false;
+//canvas.deactivateAll();
+  
+  // Enable selection all objects
+  var objects = canvas.getObjects(); 
+  for (var i = 0; i < objects.length; i++) { console.log(canvas.item[i]);
+    canvas.item[i]['selectable']  = false;
+    canvas.item[i]['evented']  = false;
+    canvas.item[i]['hasControls']  = false;
+  }
+  
+  canvas.renderAll();
 });

@@ -1,11 +1,25 @@
 <html>
     <head> 
-       <link rel="stylesheet" href="css/style.css">
+       <link rel="stylesheet" href="./css/style.css">
     </head>
     <body>
         <div class="sidenav">
-          <input type="text" name="item" id="item">
-          <button id="delete_selected">Delete selected</button>
+        <a href="#" class="previous">&laquo; Back</a>
+          <br/><br/>
+          <b>Images from DB</b>
+          <?php
+          require 'function.php';
+         // global $conn;
+          //$cans_query = 'select canvasjson,ID from can_backup';
+          //$result = mysqli_query($conn, $cans_query);
+          echo '<ul class="listing">';
+          get_can();
+    echo '</ul>';
+          ?>
+<br/><br/>
+<button id="delete_selected" class="button">Delete selected</button>
+<button class="button" id="save_can">Save File</button><br/><br/><br/>
+<button class="button" id="save_can2">Save and Exit</button>
         </div>
         <div class="main">
           <canvas id="c" width="690" height="651"  ></canvas>
@@ -57,8 +71,8 @@
   src="https://code.jquery.com/jquery-1.12.4.min.js"
   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
   crossorigin="anonymous"></script>
-  <script src="js/fabric.min.js"></script>
-        <script src="js/main.js"></script>
+  <script src="./js/fabric.min.js"></script>
+        <script src="./js/main.js"></script>
     </body>
 </html>
 
