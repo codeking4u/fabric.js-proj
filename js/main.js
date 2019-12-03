@@ -1,4 +1,4 @@
-var canvas = new fabric.Canvas('c');
+window.canvas = new fabric.Canvas('c');
 /* ctx = canvas.getContext("2d");
 canvas.width = 903;
 canvas.height = 657;
@@ -38,7 +38,7 @@ canvas.on('mouse:down', function(options) {
   //this.__canvases.push(canvas);
   
   
-  var cic1 =new fabric.Circle({ radius: 30, fill: '#f55', top: options.e.offsetY-15, left: options.e.offsetX-15,stroke: 'red',
+  var cic1 =new fabric.Circle({ radius: 20, fill: '#f55', top: options.e.offsetY-10, left: options.e.offsetX-10,stroke: 'red',
   strokeWidth: 3 });
   var number=1;
   if(canvas.getObjects().length){
@@ -46,17 +46,18 @@ canvas.on('mouse:down', function(options) {
   }
   
   var text1 = new fabric.IText(number.toString(), {
-	  fontSize: 30,
+	  fontSize: 20,
     textAlign: 'center',
         originX: 'center',
         originY: 'center',
-        left: options.e.offsetX+15,
-        top: options.e.offsetY+15
+        left: options.e.offsetX+10,
+        top: options.e.offsetY+10
 	});
   var group = new fabric.Group([ cic1,text1  ], {
-	  left: options.e.offsetX-30,
-	  top: options.e.offsetY-30,
+	  left: options.e.offsetX-20,
+	  top: options.e.offsetY-20,
   });
+  $('#number').val(number.toString());
   canvas.add(group);
   canvas.item(canvas.getObjects().length-1).set({
     borderColor: 'red',
@@ -67,40 +68,9 @@ canvas.on('mouse:down', function(options) {
   canvas.setActiveObject(canvas.item(canvas.getObjects().length-1));
   }else{
     var grp = canvas.getActiveObject(); 
-    console.log(canvas.getActiveObject().get('type'));
     if(canvas.getActiveObject().get('type')=="group"){
-    grp.on('mousedown', fabricDblClick(grp, function (obj) {
-      ungroup(grp);
-      canvas.setActiveObject(grp._objects[1]);
-      grp._objects[1].enterEditing();
-      grp._objects[1].selectAll();
-      grp._objects[1].lockMovementX = true;
-      grp._objects[1].lockMovementY = true;
-  }));
-  }
-
-  var left_val =grp.left;
-var top_val = grp.top;
-grp._objects[1].on("editing:exited", () => {
-  var items = [];
-  grp._objects.forEach(function(obj) {
-    items.push(obj);
-    canvas.remove(obj);
-  });
-  const newTextGroup = new fabric.Group(items, {
-    //subTargetCheck: true
-    left: left_val,
-	  top: top_val,
-  });
-  canvas.add(newTextGroup);
-   /* newTextGroup.on(
-    "mousedown",
-    fabricDblClick(newTextGroup, obj => {
-      ungroup(newTextGroup);
-    })
-  );  */
-});
-
+      getText(grp);
+    }
   }
   
   
@@ -113,7 +83,7 @@ var fabricDblClick = function (obj, handler) {
           obj.clicked = true;
           setTimeout(function () {
               obj.clicked = false;
-          }, 500);
+          }, 4000);
       }
   };
 };
@@ -130,26 +100,6 @@ var ungroup = function (group) {
   // if you have disabled render on addition
   canvas.renderAll();
 };
-/* $(window).bind("load", function(){
-  var w = $(window).width();
-  var h = $(window).height();
-
-  $("#c").css("width", w + "px");
-  $("#c").css("height","auto"); 
-}); 
-
-document.getElementById('clone').addEventListener('click',
-function (e) {
-        var obj = canvas.getActiveObject();
-        if (!obj) return;
-        var clone = obj.clone();
-        clone.set({
-        top: clone.get('top') + 150
-        });
-        canvas.add(clone);
-    });
-
-*/
 
 
 $('#delete_selected').click(function(){
@@ -173,7 +123,28 @@ $('.previous').on('click',function(e){
       window.history.back();
   }
 });
+function getText(group){
+  var items = group._objects;
+  //group._restoreObjectsState();
+  for (var i = 0; i < items.length; i++) {
+      if(items[i].get('type')=='i-text'){
+        $('#number').val((items[i].text));
+      }
+  }
+}
+$('#number').on('keyup',function(){
+  //upper-canvas 
+  //var canvas = new fabric.Canvas('c');
+  var grp = canvas.getActiveObject(); 
+  var items = grp._objects; 
+  items[1].set({
+    text: $('#number').val()
+  });
+  grp.addWithUpdate();
+  canvas.renderAll();
 
+  
+});
 function save_can(json,type){
   var json_data = JSON.stringify(json);
   var id= $('.datajson.active').attr('data-id');
@@ -215,16 +186,19 @@ $(document).on('click','.datajson',function(e){
  },function(o,object){
   canvas.renderAll();
  })
- //canvas.deactivateAll();
-//canvas.selection = false;
-//canvas.deactivateAll();
-  
-  // Enable selection all objects
-  var objects = canvas.getObjects(); 
-  for (var i = 0; i < objects.length; i++) { console.log(canvas.item[i]);
-    canvas.item[i]['selectable']  = false;
-    canvas.item[i]['evented']  = false;
-    canvas.item[i]['hasControls']  = false;
+ setInterval(
+   function(){},1000
+ );
+  var objects = canvas.getObjects();
+  console.log(canvas); 
+  for (var i = 0; i < objects.length; i++) { console.log(canvas);
+    canvas.item(i).set({
+      borderColor: 'red',
+      cornerColor: 'green',
+      cornerSize: 6,
+      transparentCorners: false
+    });
+
   }
   
   canvas.renderAll();

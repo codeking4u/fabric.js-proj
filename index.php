@@ -17,6 +17,7 @@
     echo '</ul>';
           ?>
 <br/><br/>
+<input type="text" name="number" id="number" placeholder="Selected circle value"/>
 <button id="delete_selected" class="button">Delete selected</button>
 <button class="button" id="save_can">Save File</button><br/><br/><br/>
 <button class="button" id="save_can2">Save and Exit</button>
@@ -67,10 +68,8 @@
 
 -->
         
-        <script
-  src="https://code.jquery.com/jquery-1.12.4.min.js"
-  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-  crossorigin="anonymous"></script>
+        
+  <script src="./js/jquery.js"></script>
   <script src="./js/fabric.min.js"></script>
         <script src="./js/main.js"></script>
     </body>
