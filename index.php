@@ -1,30 +1,68 @@
 <html>
     <head> 
-       <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+       <link rel="stylesheet" href="./css/main.css">
     </head>
     <body>
-        <div class="sidenav">
-        <a href="#" class="previous">&laquo; Back</a>
-          <br/><br/>
-          <b>Images from DB</b>
-          <?php
-          require 'function.php';
-         // global $conn;
-          //$cans_query = 'select canvasjson,ID from can_backup';
-          //$result = mysqli_query($conn, $cans_query);
-          echo '<ul class="listing">';
-          get_can();
-    echo '</ul>';
-          ?>
-<br/><br/>
-<input type="text" name="number" id="number" placeholder="Selected circle value"/>
-<button id="delete_selected" class="button">Delete selected</button>
-<button class="button" id="save_can">Save File</button><br/><br/><br/>
-<button class="button" id="save_can2">Save and Exit</button>
+    <header>
+      <div class="top-main">
+        <div class="top-texts">
+            <span>Selected Value : </span>
+            <input class="alpha" type="text"><span> - </span><input class="num" type="number">
         </div>
-        <div class="main">
-          <canvas id="c" width="690" height="651"  ></canvas>
+        <div class="top-colors">
+            <span>Color : </span>
+            <div class="colordiv white"></div>
+            <div class="colordiv red"></div>
+            <div class="colordiv green"></div>
         </div>
+        <div class="top-confirm">
+          <button>Confirm</button>
+          <a href="#">
+            <span class="glyphicon glyphicon-trash"></span>
+          </a>
+        </div>
+      </div> 
+    </header>
+    <div class="container-x">
+      <aside class="user-dashboard">
+        <nav class="main">
+            <!--h5>Menu</h5-->
+            <ul class="nav-container">
+              <li class="nav-item open">
+                  <span class="ship
+                  ">Ship_name</span>
+                  <?php
+                      require 'function.php';
+                      echo '<ul class="listing subnav">';
+                      get_can();
+                      echo '</ul>';
+                  ?>
+              </li>
+            </ul>
+        </nav>
+
+        <div class="side-controls">
+          <div class='add-controls'>
+            <button it="planning">Add Planning</button>
+            <input type="text">
+          </div>
+          <div class="add-controls">
+            <button id="hazmat">Add Hazmat</button>
+            <input type="text">
+          </div>
+          <div class="save-controls">
+            <button class="button" id="save_can">Save</button>
+            <button class="button" id="save_can2">Save and Exit</button>
+          </div>
+          
+          </div>
+      </aside>
+
+      <main class="main">
+        <canvas id="c" width="690" height="651"  ></canvas>
+      </main>
+    </div>    
         
 <!--
         <div style="display: inline-block; margin-left: 10px">
@@ -71,6 +109,7 @@
         
   <script src="./js/jquery.js"></script>
   <script src="./js/fabric.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="./js/main.js"></script>
     </body>
 </html>

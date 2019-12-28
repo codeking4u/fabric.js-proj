@@ -22,7 +22,10 @@ function get_can(){
     while($row = $result->fetch_assoc()){
           ;
           
-        $add.= "<li class='datajson' data-json='".$row['canvasjson']."'data-id='".$row['ID']."'>Picture ".$i."</li>";
+        $add.= "<li class='datajson' data-json='".$row['canvasjson']."'data-id='".$row['ID']."'><img src='https://homepages.cae.wisc.edu/~ece533/images/mountain.png' alt='plan' style='width: 25px;
+        height: 25px;
+        padding: 0;
+        margin-right: 10px;'><span>Plan ".$i."</span></li>";
         $i++;
     }
     echo $add;

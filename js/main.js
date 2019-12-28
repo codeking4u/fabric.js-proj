@@ -203,3 +203,13 @@ $(document).on('click','.datajson',function(e){
   
   canvas.renderAll();
 });
+
+$(document).ready(function(){
+
+  $('li.nav-item span' ).click( function() {
+    $(this).parent().toggleClass('open');
+    
+  });
+  $('header').css({'margin-left':parseInt($('aside').width())+5,'width': $(window).width()-parseInt($('aside').width())-5});
+})
+
