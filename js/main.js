@@ -1,4 +1,7 @@
-window.canvas = new fabric.Canvas('c');
+window.canvas = new fabric.Canvas('c',{cursor:'cross-hair'});
+window.readToDrop = false;
+window.fillColor = '#fff';
+
 /* ctx = canvas.getContext("2d");
 canvas.width = 903;
 canvas.height = 657;
@@ -21,8 +24,14 @@ background.onload = function(){
     backgroundImageStretch: true
 }); 
    */
+  canvas.on('mouse:move', function (evt) {
+    if (window.readToDrop==true) {
+      canvas.defaultCursor = 'crosshair';
+    }
+  });
 canvas.on('mouse:down', function(options) {
- if (options.target ==undefined ) {
+ if (options.target ==undefined && window.readToDrop==true) {
+  
  /* canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: options.e.offsetY-15, left: options.e.offsetX-15,stroke: 'red',
 	strokeWidth: 3 }));
   
@@ -38,7 +47,7 @@ canvas.on('mouse:down', function(options) {
   //this.__canvases.push(canvas);
   
   
-  var cic1 =new fabric.Circle({ radius: 20, fill: '#f55', top: options.e.offsetY-10, left: options.e.offsetX-10,stroke: 'red',
+  var cic1 =new fabric.Circle({ radius: 20, fill: window.fillColor, top: options.e.offsetY-10, left: options.e.offsetX-10,stroke: 'red',
   strokeWidth: 3 });
   var number=1;
   if(canvas.getObjects().length){
@@ -66,11 +75,16 @@ canvas.on('mouse:down', function(options) {
     transparentCorners: false
   });
   canvas.setActiveObject(canvas.item(canvas.getObjects().length-1));
+  window.readToDrop = false;
+  canvas.defaultCursor = 'default';
   }else{
-    var grp = canvas.getActiveObject(); 
-    if(canvas.getActiveObject().get('type')=="group"){
-      getText(grp);
+    if (options.target !=undefined){
+      var grp = canvas.getActiveObject(); 
+      if(canvas.getActiveObject().get('type')=="group"){
+        getText(grp);
+      }
     }
+    
   }
   
   
@@ -211,5 +225,12 @@ $(document).ready(function(){
     
   });
   $('header').css({'margin-left':parseInt($('aside').width())+5,'width': $(window).width()-parseInt($('aside').width())-5});
+
+  $('.drop-ready').click(function(){
+    $('.drop-ready').removeClass('active');
+    $(this).addClass('active');
+    window.readToDrop = true;
+    window.fillColor = $(this).attr('data-color');
+  });
 })
 

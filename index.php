@@ -8,7 +8,7 @@
       <div class="top-main">
         <div class="top-texts">
             <span>Selected Value : </span>
-            <input class="alpha" type="text"><span> - </span><input class="num" type="number">
+            <input class="alpha" type="text"><span> - </span><input id="number" class="num" type="number">
         </div>
         <div class="top-colors">
             <span>Color : </span>
@@ -44,11 +44,11 @@
 
         <div class="side-controls">
           <div class='add-controls'>
-            <button it="planning">Add Planning</button>
+            <button id="planning" class='drop-ready' data-color='#fff'>Add Planning</button>
             <input type="text">
           </div>
           <div class="add-controls">
-            <button id="hazmat">Add Hazmat</button>
+            <button id="hazmat" class='drop-ready' data-color='#f55'>Add Hazmat</button>
             <input type="text">
           </div>
           <div class="save-controls">
