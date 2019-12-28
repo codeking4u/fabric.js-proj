@@ -18,7 +18,7 @@
         </div>
         <div class="top-confirm">
           <button>Confirm</button>
-          <a href="#">
+          <a href="#" id="delete_selected">
             <span class="glyphicon glyphicon-trash"></span>
           </a>
         </div>

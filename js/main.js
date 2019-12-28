@@ -116,9 +116,10 @@ var ungroup = function (group) {
 };
 
 
-$('#delete_selected').click(function(){
+$('#delete_selected').click(function(e){
   canvas.remove(canvas.getActiveObject());
   canvas.renderAll();
+  e.preventDefault();
 });
 
 $('#save_can').on('click',function(){
