@@ -1,6 +1,10 @@
 window.canvas = new fabric.Canvas('c',{cursor:'cross-hair'});
+canvas.selection = false;
 window.readToDrop = false;
 window.fillColor = '#fff';
+window.fullwidth = $('main.main').width();
+window.fullheight = $('main.main').height();
+window.max_w_pos = fullwidth - 50;
 
 /* ctx = canvas.getContext("2d");
 canvas.width = 903;
@@ -24,13 +28,14 @@ background.onload = function(){
     backgroundImageStretch: true
 }); 
    */
+ 
   canvas.on('mouse:move', function (evt) {
     if (window.readToDrop==true) {
       canvas.defaultCursor = 'crosshair';
     }
   });
 canvas.on('mouse:down', function(options) {
- if (options.target ==undefined && window.readToDrop==true) {
+ if (options.target._element.tagName =='IMG' && window.readToDrop==true) {
   
  /* canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: options.e.offsetY-15, left: options.e.offsetX-15,stroke: 'red',
 	strokeWidth: 3 }));
@@ -77,8 +82,8 @@ canvas.on('mouse:down', function(options) {
   canvas.setActiveObject(canvas.item(canvas.getObjects().length-1));
   window.readToDrop = false;
   canvas.defaultCursor = 'default';
-  }else{
-    if (options.target !=undefined){
+  }else{ 
+    if (options.target !=undefined && options.target.selectable!= false){
       var grp = canvas.getActiveObject(); 
       if(canvas.getActiveObject().get('type')=="group"){
         getText(grp);
@@ -195,26 +200,49 @@ $(document).on('click','.datajson',function(e){
   $(this).addClass('active');
   var json= $(this).attr('data-json');
   var id= $(this).attr('data-id');
-  
-  canvas.loadFromJSON(json, function() {
-    canvas.renderAll.bind(canvas) 
- },function(o,object){
-  canvas.renderAll();
- })
- setInterval(
-   function(){},1000
- );
-  var objects = canvas.getObjects();
-  console.log(canvas); 
-  for (var i = 0; i < objects.length; i++) { console.log(canvas);
-    canvas.item(i).set({
-      borderColor: 'red',
-      cornerColor: 'green',
-      cornerSize: 6,
-      transparentCorners: false
-    });
+  var dataurl= $(this).attr('data-url');
 
-  }
+///////////////
+    if (typeof json !== typeof undefined && json !== false) {
+    console.log('jsonnn');
+    canvas.clear();
+    
+    canvas.loadFromJSON(json, function() {
+        canvas.renderAll.bind(canvas) 
+    },function(o,object){
+      canvas.renderAll();
+    })
+
+      var objects = canvas.getObjects();
+      console.log(canvas); 
+      for (var i = 0; i < objects.length; i++) { console.log(canvas);
+        canvas.item(i).set({
+          borderColor: 'red',
+          cornerColor: 'green',
+          cornerSize: 6,
+          transparentCorners: false
+        });
+
+      }
+      
+    }else{
+    
+      if (typeof dataurl !== typeof undefined && dataurl !== false) {
+        addImage(dataurl);
+        /* setTimeout(
+          function(){
+              var jsonn = canvas.toJSON();
+              console.log('normal',jsonn);
+              $(this).attr('data-json',JSON.stringify(jsonn));
+              $(this).attr('data-ab',1);
+          }.bind(this),
+          4000
+        ); */
+      }
+     
+     }
+////////////////
+
   
   canvas.renderAll();
 });
@@ -233,5 +261,99 @@ $(document).ready(function(){
     window.readToDrop = true;
     window.fillColor = $(this).attr('data-color');
   });
+  $('.red').click(function(){
+    console.log('red');
+    zoomIn()
+  });
+  $('.green').click(function(){
+    console.log('red');
+    zoomOut()
+  });
 })
+function zoomIn() {
+  canvasScale=1;
+  SCALE_FACTOR=1.2;
+  canvasScale = canvasScale * SCALE_FACTOR;
+
+  canvas.setHeight(canvas.getHeight() * SCALE_FACTOR);
+  canvas.setWidth(canvas.getWidth() * SCALE_FACTOR);
+
+  var objects = canvas.getObjects();
+  for (var i in objects) {
+      var scaleX = objects[i].scaleX;
+      var scaleY = objects[i].scaleY;
+      var left = objects[i].left;
+      var top = objects[i].top;
+
+      var tempScaleX = scaleX * SCALE_FACTOR;
+      var tempScaleY = scaleY * SCALE_FACTOR;
+      var tempLeft = left * SCALE_FACTOR;
+      var tempTop = top * SCALE_FACTOR;
+
+      objects[i].scaleX = tempScaleX;
+      objects[i].scaleY = tempScaleY;
+      objects[i].left = tempLeft;
+      objects[i].top = tempTop;
+
+      objects[i].setCoords();
+  }
+
+ 
+  canvas.renderAll();
+}
+function zoomOut (){
+  canvasScale=1;
+  SCALE_FACTOR=1.2;
+  canvasScale = canvasScale / SCALE_FACTOR;
+
+  canvas.setHeight(canvas.getHeight() * (1 / SCALE_FACTOR));
+  canvas.setWidth(canvas.getWidth() * (1 / SCALE_FACTOR));
+
+  var objects = canvas.getObjects();
+  for (var i in objects) {
+      var scaleX = objects[i].scaleX;
+      var scaleY = objects[i].scaleY;
+      var left = objects[i].left;
+      var top = objects[i].top;
+
+      var tempScaleX = scaleX * (1 / SCALE_FACTOR);
+      var tempScaleY = scaleY * (1 / SCALE_FACTOR);
+      var tempLeft = left * (1 / SCALE_FACTOR);
+      var tempTop = top * (1 / SCALE_FACTOR);
+
+      objects[i].scaleX = tempScaleX;
+      objects[i].scaleY = tempScaleY;
+      objects[i].left = tempLeft;
+      objects[i].top = tempTop;
+
+      objects[i].setCoords();
+  }
+        
+  canvas.renderAll();
+}
+function addImage(url){
+  fabric.Image.fromURL(url, function(myImg) {
+   var final_width = myImg.width;
+   var final_height = myImg.height;
+   var imageRatio = myImg.width/myImg.height;
+   
+   if(myImg.width>window.fullwidth){
+   	final_width = max_w_pos
+    final_height = final_width/ imageRatio;
+    console.log(final_width,final_height)
+   }else{
+   
+   }
+   var myImg = myImg.set({ left: 0, top: 0 ,width:final_width,height:final_height,selectable: false});
+   myImg.hoverCursor = 'default';
+   console.log('img.width'+myImg.width,'can.width'+canvas.width);
+   canvas.add(myImg); 
+   
+   canvas.setDimensions({width:final_width, height:final_height});
+   
+  });
+}
+
+
+
 

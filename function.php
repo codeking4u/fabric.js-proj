@@ -28,6 +28,19 @@ function get_can(){
         margin-right: 10px;'><span>Plan ".$i."</span></li>";
         $i++;
     }
+    $add.= "<li class='datajson' data-id='".$row['ID']."' data-url='https://dummyimage.com/600x400/000/fff'><img src='https://dummyimage.com/600x400/000/fff' alt='plan' style='width: 25px;
+        height: 25px;
+        padding: 0;
+        margin-right: 10px;'><span>600x400</span></li>";
+
+    $add.= "<li class='datajson' data-id='".$row['ID']."' data-url='https://dummyimage.com/1200x400/000/fff'><img src='https://dummyimage.com/1200x400/000/fff' alt='plan' style='width: 25px;
+        height: 25px;
+        padding: 0;
+        margin-right: 10px;'><span>1200x400</span></li>";
+    $add.= "<li class='datajson' data-id='".$row['ID']."' data-url='https://dummyimage.com/400x1200/000/fff'><img src='https://dummyimage.com/400x1200/000/fff' alt='plan' style='width: 25px;
+        height: 25px;
+        padding: 0;
+        margin-right: 10px;'><span>400x1200</span></li>";
     echo $add;
 }
 

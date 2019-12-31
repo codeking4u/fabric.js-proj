@@ -60,7 +60,7 @@
       </aside>
 
       <main class="main">
-        <canvas id="c" width="690" height="651"  ></canvas>
+        <canvas id="c" class="explore_area" width="600" height="400"  ></canvas>
       </main>
     </div>    
         
