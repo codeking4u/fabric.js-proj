@@ -15,8 +15,7 @@ function save_can(){
         $sql = "insert into can_backup (imageid, canvasjson, extra) values('asd','".$mysata."','asds')";
         $result = mysqli_query($link, $sql);
         $id = mysql_insert_id();
-    }
-     
+    }    
 }
 function get_can(){
     global $link;

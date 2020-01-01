@@ -35,7 +35,8 @@ background.onload = function(){
     }
   });
 canvas.on('mouse:down', function(options) {
- if (options.target._element.tagName =='IMG' && window.readToDrop==true) {
+  
+ if (options.target.type =='image' && window.readToDrop==true) {
   
  /* canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: options.e.offsetY-15, left: options.e.offsetX-15,stroke: 'red',
 	strokeWidth: 3 }));
@@ -128,11 +129,11 @@ $('#delete_selected').click(function(e){
 });
 
 $('#save_can').on('click',function(){
-  var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling']);
+  var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling','propertiesToInclude ']);
   save_can(json,0)
 });
 $('#save_can2').on('click',function(){
-  var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling']);
+  var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling','propertiesToInclude ']);
   save_can(json,1);
 });
 $('.previous').on('click',function(e){
@@ -210,20 +211,20 @@ $(document).on('click','.datajson',function(e){
     canvas.loadFromJSON(json, function() {
         canvas.renderAll.bind(canvas) 
     },function(o,object){
-      canvas.renderAll();
-    })
-
-      var objects = canvas.getObjects();
-      console.log(canvas); 
-      for (var i = 0; i < objects.length; i++) { console.log(canvas);
-        canvas.item(i).set({
+      if (object.type == 'image') {
+        object.set({ left: 0, top: 0,selectable: false});
+        object.hoverCursor = 'default';
+      }else{
+        object.set({
           borderColor: 'red',
           cornerColor: 'green',
           cornerSize: 6,
           transparentCorners: false
         });
-
       }
+      canvas.renderAll();
+    })
+    
       
     }else{
     
