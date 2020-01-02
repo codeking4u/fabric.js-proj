@@ -5,7 +5,12 @@ window.fillColor = '#fff';
 window.fullwidth = $('main.main').width();
 window.fullheight = $('main.main').height();
 window.max_w_pos = fullwidth - 50;
-
+fabric.Object.NUM_FRACTION_DIGITS = 17;
+var SCALE_FACTOR = 1.3;
+var zoomMax = 23; 
+window.originalWidth = 600;
+window.originalHeight = 400;
+canvas.setZoom(1);
 /* ctx = canvas.getContext("2d");
 canvas.width = 903;
 canvas.height = 657;
@@ -37,22 +42,6 @@ background.onload = function(){
 canvas.on('mouse:down', function(options) {
   
  if (options.target.type =='image' && window.readToDrop==true) {
-  
- /* canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: options.e.offsetY-15, left: options.e.offsetX-15,stroke: 'red',
-	strokeWidth: 3 }));
-  
-
-  canvas.item(0).set({
-    borderColor: 'red',
-    cornerColor: 'green',
-    cornerSize: 6,
-    transparentCorners: false
-  });
-  canvas.setActiveObject(canvas.item(0));*/
- 
-  //this.__canvases.push(canvas);
-  
-  
   var cic1 =new fabric.Circle({ radius: 20, fill: window.fillColor, top: options.e.offsetY-10, left: options.e.offsetX-10,stroke: 'red',
   strokeWidth: 3 });
   var number=1;
@@ -96,32 +85,6 @@ canvas.on('mouse:down', function(options) {
   
 });
 
-var fabricDblClick = function (obj, handler) {
-  return function () {
-      if (obj.clicked) handler(obj);
-      else {
-          obj.clicked = true;
-          setTimeout(function () {
-              obj.clicked = false;
-          }, 4000);
-      }
-  };
-};
-
-var ungroup = function (group) {
-  items = group._objects;
-  //group._restoreObjectsState();
-  canvas.remove(group);
-  for (var i = 0; i < items.length; i++) {
-      canvas.add(items[i]);
-      //console.log(items[i]);
-  }
-  
-  // if you have disabled render on addition
-  canvas.renderAll();
-};
-
-
 $('#delete_selected').click(function(e){
   canvas.remove(canvas.getActiveObject());
   canvas.renderAll();
@@ -129,11 +92,11 @@ $('#delete_selected').click(function(e){
 });
 
 $('#save_can').on('click',function(){
-  var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling','propertiesToInclude ']);
+  var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling','propertiesToInclude','width', 'height']);
   save_can(json,0)
 });
 $('#save_can2').on('click',function(){
-  var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling','propertiesToInclude ']);
+  var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling','propertiesToInclude','width', 'height']);
   save_can(json,1);
 });
 $('.previous').on('click',function(e){
@@ -197,13 +160,13 @@ function load_can(){
   });
 }
 $(document).on('click','.datajson',function(e){
+  canvas.setZoom(1);
   $('.datajson').removeClass('active');
   $(this).addClass('active');
   var json= $(this).attr('data-json');
   var id= $(this).attr('data-id');
   var dataurl= $(this).attr('data-url');
-
-///////////////
+  
     if (typeof json !== typeof undefined && json !== false) {
     console.log('jsonnn');
     canvas.clear();
@@ -222,6 +185,10 @@ $(document).on('click','.datajson',function(e){
           transparentCorners: false
         });
       }
+      canvas.setHeight(object.height);
+      canvas.setWidth(object.width);
+      $('.canvas-container canvas').attr('data-originalWidth',object.width);
+      $('.canvas-container canvas').attr('data-originalHeight',object.height);
       canvas.renderAll();
     })
     
@@ -230,15 +197,6 @@ $(document).on('click','.datajson',function(e){
     
       if (typeof dataurl !== typeof undefined && dataurl !== false) {
         addImage(dataurl);
-        /* setTimeout(
-          function(){
-              var jsonn = canvas.toJSON();
-              console.log('normal',jsonn);
-              $(this).attr('data-json',JSON.stringify(jsonn));
-              $(this).attr('data-ab',1);
-          }.bind(this),
-          4000
-        ); */
       }
      
      }
@@ -262,16 +220,31 @@ $(document).ready(function(){
     window.readToDrop = true;
     window.fillColor = $(this).attr('data-color');
   });
-  $('.red').click(function(){
-    console.log('red');
+  $('.zoom').click(function(){
     zoomIn()
   });
-  $('.green').click(function(){
-    console.log('red');
-    zoomOut()
+  $('.zoom-init').click(function(){
+    resetZoom()
+  });
+  $('.zoom-out').click(function(){
+    zoomOut();
+
+    getFabricCanvases().forEach(function(elementValue) {
+        var currentTop = Number(elementValue.css("top").replace(/[^\d\.\-]/g, '') );
+        var currentLeft = Number(elementValue.css("left").replace(/[^\d\.\-]/g, '') );
+
+        currentTop = zoomCalcYpos(currentTop);
+        currentLeft = zoomCalcXpos(currentLeft);
+
+        elementValue.css("top", currentTop);
+        elementValue.css("left", currentLeft);
+    });
+  
   });
 })
-function zoomIn() {
+
+
+/* function zoomIn() {
   canvasScale=1;
   SCALE_FACTOR=1.2;
   canvasScale = canvasScale * SCALE_FACTOR;
@@ -331,7 +304,7 @@ function zoomOut (){
   }
         
   canvas.renderAll();
-}
+} */
 function addImage(url){
   fabric.Image.fromURL(url, function(myImg) {
    var final_width = myImg.width;
@@ -351,8 +324,95 @@ function addImage(url){
    canvas.add(myImg); 
    
    canvas.setDimensions({width:final_width, height:final_height});
-   
+   $('.canvas-container canvas').attr('data-originalWidth',final_width);
+      $('.canvas-container canvas').attr('data-originalHeight',final_height);
   });
+}
+function resetZoom() {
+
+  canvas.setHeight(canvas.getHeight() /canvas.getZoom() );
+  canvas.setWidth(canvas.getWidth() / canvas.getZoom() );
+  canvas.setZoom(1);
+
+  canvas.renderAll();
+
+  getFabricCanvases().forEach(function(item){
+      item.css('left', 0);
+      item.css('top', 0);
+  });
+
+}
+var getFabricCanvases = (function () {
+  var fabricCanvasCollection;
+  return function getCanvases() {
+      if (!fabricCanvasCollection) {
+          fabricCanvasCollection = [];
+          var fabricCanvas = $('.canvas-container canvas');
+          fabricCanvas.each(function(index, item) {
+              fabricCanvasCollection.push($(item));
+          });
+      }
+      return fabricCanvasCollection;
+  }
+})();
+
+function zoomInCalcYpos(yPos) {
+  yPos *= canvas.getZoom();
+  var height = parseFloat($('.canvas-container canvas').attr('data-originalHeight'));
+  return zoomCalcYpos( (height/2) - yPos );
+}
+function zoomCalcYpos(yPos) {
+  var height = parseFloat($('.canvas-container canvas').attr('data-originalHeight'));
+  if (yPos>0){
+      return 0;
+  }
+  if (yPos+canvas.getHeight() < height) {
+      return height - canvas.getHeight();
+  }
+  return yPos;
+}
+function zoomInCalcXpos(xPos) {
+  
+  var width = parseFloat($('.canvas-container canvas').attr('data-originalWidth'));
+  xPos *= canvas.getZoom();
+  return zoomCalcXpos((width/2) - xPos);
+}
+function zoomCalcXpos(xPos) {
+  var width = parseFloat($('.canvas-container canvas').attr('data-originalWidth'));
+  if (xPos>0){
+      return 0;
+  }
+  if (xPos+canvas.getWidth() < width){
+    $('.canvas-container canvas').attr('data-originalWidth',final_width);
+      $('.canvas-container canvas').attr('data-originalHeight',final_height);
+      return width - canvas.getWidth();
+  }
+  return xPos;
+}
+// Zoom In
+function zoomIn() {
+  if(canvas.getZoom().toFixed(5) > zoomMax){
+      console.log("zoomIn: Error: cannot zoom-in anymore");
+      return;
+  }
+
+  canvas.setZoom(canvas.getZoom()*SCALE_FACTOR);
+  canvas.setHeight(canvas.getHeight() * SCALE_FACTOR);
+  canvas.setWidth(canvas.getWidth() * SCALE_FACTOR);
+  canvas.renderAll();
+}
+
+// Zoom Out
+function zoomOut() {
+  if( canvas.getZoom().toFixed(5) <=1 ){
+      console.log("zoomOut: Error: cannot zoom-out anymore");
+      return;
+  }
+
+  canvas.setZoom(canvas.getZoom()/SCALE_FACTOR);
+  canvas.setHeight(canvas.getHeight() / SCALE_FACTOR);
+  canvas.setWidth(canvas.getWidth() / SCALE_FACTOR);
+  canvas.renderAll();
 }
 
 

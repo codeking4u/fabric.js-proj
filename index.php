@@ -2,6 +2,7 @@
     <head> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
        <link rel="stylesheet" href="./css/main.css">
+       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     </head>
     <body>
     <header>
@@ -60,7 +61,11 @@
       </aside>
 
       <main class="main">
-        <canvas id="c" class="explore_area" width="600" height="400"  ></canvas>
+        <canvas id="c" class="explore_area" width="600" height="400"  data-originalWidth="600" data-originalHeight="400"></canvas>
+        <a class="zbtn zoom"><i class="fas fa-search-plus"></i></a>
+        <a class="zbtn zoom-out"><i class="fas fa-search-minus"></i></a>
+        <a class="zbtn zoom-init"><i class="fas fa-recycle"></i></a>
+        
       </main>
     </div>    
         
