@@ -40,9 +40,14 @@ background.onload = function(){
     }
   });
 canvas.on('mouse:down', function(options) {
-  
+  console.log(canvas.getZoom(),options.e.offsetX,options.e.offsetY)
+  a = options.e.offsetX/canvas.getZoom();
+  b = options.e.offsetY/canvas.getZoom();
+  console.log(canvas.getZoom(),a,b)
  if (options.target.type =='image' && window.readToDrop==true) {
-  var cic1 =new fabric.Circle({ radius: 20, fill: window.fillColor, top: options.e.offsetY-10, left: options.e.offsetX-10,stroke: 'red',
+  var tempZoom = canvas.getZoom();
+  canvas.setZoom(1);
+  var cic1 =new fabric.Circle({ radius: 20, fill: window.fillColor, top: b-10, left: a-10,stroke: 'red',
   strokeWidth: 3 });
   var number=1;
   if(canvas.getObjects().length){
@@ -54,15 +59,16 @@ canvas.on('mouse:down', function(options) {
     textAlign: 'center',
         originX: 'center',
         originY: 'center',
-        left: options.e.offsetX+10,
-        top: options.e.offsetY+10
+        left: a+10,
+        top: b+10
 	});
   var group = new fabric.Group([ cic1,text1  ], {
-	  left: options.e.offsetX-20,
-	  top: options.e.offsetY-20,
+	  left: a-20,
+	  top: b-20,
   });
   $('#number').val(number.toString());
   canvas.add(group);
+  canvas.setZoom(tempZoom);
   canvas.item(canvas.getObjects().length-1).set({
     borderColor: 'red',
     cornerColor: 'green',
@@ -92,10 +98,12 @@ $('#delete_selected').click(function(e){
 });
 
 $('#save_can').on('click',function(){
+  resetZoom();
   var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling','propertiesToInclude','width', 'height']);
   save_can(json,0)
 });
 $('#save_can2').on('click',function(){
+  resetZoom();
   var json = canvas.toJSON(['lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'lockUniScaling','propertiesToInclude','width', 'height']);
   save_can(json,1);
 });
@@ -229,7 +237,7 @@ $(document).ready(function(){
   $('.zoom-out').click(function(){
     zoomOut();
 
-    getFabricCanvases().forEach(function(elementValue) {
+    /* getFabricCanvases().forEach(function(elementValue) {
         var currentTop = Number(elementValue.css("top").replace(/[^\d\.\-]/g, '') );
         var currentLeft = Number(elementValue.css("left").replace(/[^\d\.\-]/g, '') );
 
@@ -238,13 +246,13 @@ $(document).ready(function(){
 
         elementValue.css("top", currentTop);
         elementValue.css("left", currentLeft);
-    });
+    }); */
   
   });
 })
 
 
-/* function zoomIn() {
+ function zoomIn2() {
   canvasScale=1;
   SCALE_FACTOR=1.2;
   canvasScale = canvasScale * SCALE_FACTOR;
@@ -275,7 +283,7 @@ $(document).ready(function(){
  
   canvas.renderAll();
 }
-function zoomOut (){
+function zoomOut2 (){
   canvasScale=1;
   SCALE_FACTOR=1.2;
   canvasScale = canvasScale / SCALE_FACTOR;
@@ -304,7 +312,7 @@ function zoomOut (){
   }
         
   canvas.renderAll();
-} */
+} 
 function addImage(url){
   fabric.Image.fromURL(url, function(myImg) {
    var final_width = myImg.width;
@@ -332,6 +340,7 @@ function resetZoom() {
 
   canvas.setHeight(canvas.getHeight() /canvas.getZoom() );
   canvas.setWidth(canvas.getWidth() / canvas.getZoom() );
+  console.log(canvas.getZoom());
   canvas.setZoom(1);
 
   canvas.renderAll();

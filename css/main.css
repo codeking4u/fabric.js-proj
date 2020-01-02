@@ -252,9 +252,6 @@ header .top-main .top-colors .colordiv.green {
   user-select: none;
   transition: all 0.3s ease;
 }
-.container-x main.main .zbtn:visited {
-  background: #000d0e;
-}
 .container-x main.main .zoom {
   bottom: 190px;
 }
@@ -273,7 +270,7 @@ header .top-main .top-colors .colordiv.green {
   bottom: 50px;
 }
 .container-x main.main .zoom-init:hover {
-  background: #09c441;
+  background: #81ffa7;
   cursor: pointer;
 }
 .side-controls .add-controls {
