@@ -49,13 +49,13 @@ body {
    // background-image: linear-gradient(to bottom, $gradientStep1, $gradientStep2, $gradientStep3, $gradientStep4);
 }
 header{
-    margin:10 5 0 25;
+    margin:10 5 0 0;
     height: 50px;
     background-color: #DADADA;
     position: fixed;
-    margin-left: 24%;
+    margin-left: 310px; 
     z-index: 9999;
-    width: 75%;
+    width: 100%;
 
     .top-main{
         display: flex;
@@ -114,11 +114,13 @@ header{
     .user-dashboard {
         background: var(--secondary);
         color: var(--secondaryFont);
-        width: 23%;
+        width: 300px;
         height: 100vh;
         display: flex;
         flex-direction: column;
         max-width: 270px;
+        position: fixed;
+        z-index: 9999;
     }
 
     a {
@@ -133,7 +135,6 @@ header{
         display: flex;
         flex-direction: column;
         flex: 1;
-        
         h5 {
             padding: 0 20px 10px;
             color: var(--secondaryFontAlt);
@@ -257,11 +258,12 @@ header{
         }
     }
     main.main {
-        height: 100vh;
-        width: 77%;
+        
+        width: 100%;
         color: var(--primaryFont);
         margin-top: 70px;
-        
+        padding-left: 350px;
+        overflow: auto;
             .zbtn {
                 right: 20px;
                 width: 45px;

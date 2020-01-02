@@ -44,13 +44,13 @@ body {
   overflow: hidden;
 }
 header {
-  margin: 10 5 0 25;
+  margin: 10 5 0 0;
   height: 50px;
   background-color: #DADADA;
   position: fixed;
-  margin-left: 24%;
+  margin-left: 310px;
   z-index: 9999;
-  width: 75%;
+  width: 100%;
 }
 header .top-main {
   display: flex;
@@ -106,11 +106,13 @@ header .top-main .top-colors .colordiv.green {
 .container-x .user-dashboard {
   background: var(--secondary);
   color: var(--secondaryFont);
-  width: 23%;
+  width: 300px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   max-width: 270px;
+  position: fixed;
+  z-index: 9999;
 }
 .container-x a {
   color: var(--tertiary);
@@ -227,10 +229,11 @@ header .top-main .top-colors .colordiv.green {
   opacity: 1;
 }
 .container-x main.main {
-  height: 100vh;
-  width: 77%;
+  width: 100%;
   color: var(--primaryFont);
   margin-top: 70px;
+  padding-left: 350px;
+  overflow: auto;
 }
 .container-x main.main .zbtn {
   right: 20px;
