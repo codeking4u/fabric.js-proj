@@ -46,6 +46,10 @@ function get_can(){
         height: 25px;
         padding: 0;
         margin-right: 10px;'><span>400x1200</span></li>";
+    $add.= "<li class='datajson' data-id='".$row['ID']."' data-url='https://dummyimage.com/400x1500/000/fff'><img src='https://dummyimage.com/400x1500/000/fff' alt='plan' style='width: 25px;
+        height: 25px;
+        padding: 0;
+        margin-right: 10px;'><span>400x1200</span></li>";
     echo $add;
 }
 

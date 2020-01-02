@@ -227,6 +227,7 @@ header .top-main .top-colors .colordiv.green {
   visibility: visible;
   max-height: 200px;
   opacity: 1;
+  overflow: auto;
 }
 .container-x main.main {
   width: 100%;
