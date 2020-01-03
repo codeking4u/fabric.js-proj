@@ -25,7 +25,7 @@ canvas.on('mouse:down', function(options) {
  if (options.target.type =='image' && window.readToDrop==true) {
   var tempZoom = canvas.getZoom();
   canvas.setZoom(1);
-  var cic1 =new fabric.Circle({ radius: 20, fill: window.fillColor, top: b-10, left: a-10,stroke: 'grey',
+  var cic1 =new fabric.Circle({ radius: 20, fill: window.fillColor, top: b-10, left: a-10,stroke: 'black',
   strokeWidth: 3 });
   var number=1;
   if(canvas.getObjects().length){
@@ -240,6 +240,20 @@ $(document).ready(function(){
         elementValue.css("left", currentLeft);
     }); */
   
+  });
+
+  $('.colordiv').click(function(){
+    var grp = canvas.getActiveObject();
+    var color = $(this).attr('data-color'); 
+    if(grp){
+      var items = grp._objects; 
+      items[0].set({
+        fill: color
+      });
+      grp.addWithUpdate();
+      canvas.renderAll();
+    }
+    
   });
 })
 

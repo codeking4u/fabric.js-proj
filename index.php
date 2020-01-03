@@ -15,9 +15,9 @@
         </div>
         <div class="top-colors">
             <span>Color : </span>
-            <div class="colordiv white" data-colr='#fff'></div>
-            <div class="colordiv red" data-colr='red'></div>
-            <div class="colordiv green" data-colr='#18cc30' ></div>
+            <div class="colordiv white" data-color='#fff'></div>
+            <div class="colordiv red" data-color='red'></div>
+            <div class="colordiv green" data-color='#18cc30' ></div>
         </div>
         <div class="top-confirm">
           <button>Confirm</button>

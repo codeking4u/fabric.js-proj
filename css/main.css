@@ -92,15 +92,25 @@ header .top-main .top-colors {
 header .top-main .top-colors .colordiv {
   width: 25px;
   height: 25px;
+  cursor: pointer;
 }
 header .top-main .top-colors .colordiv.white {
   background-color: #fff;
 }
+header .top-main .top-colors .colordiv.white:hover {
+  border: 1px solid black;
+}
 header .top-main .top-colors .colordiv.red {
   background-color: red;
 }
+header .top-main .top-colors .colordiv.red:hover {
+  border: 1px solid black;
+}
 header .top-main .top-colors .colordiv.green {
   background-color: #18cc30;
+}
+header .top-main .top-colors .colordiv.green:hover {
+  border: 1px solid black;
 }
 .container-x {
   width: 100%;
