@@ -46,6 +46,7 @@ canvas.on('mouse:down', function(options) {
   });
   $('#number').val(number.toString());
   canvas.add(group);
+  getMaxPlanSeries();
   canvas.setZoom(tempZoom);
   canvas.item(canvas.getObjects().length-1).set({
     borderColor: 'red',
@@ -156,6 +157,16 @@ function load_can(){
       success   : function(res) {
           //var result = $.parseJSON(res);	
           $('.listing').html(res);
+      }
+  });
+}
+function getMaxPlanSeries(){
+  $.ajax({ 
+      type      : 'POST',
+      url       : 'function.php?action=getMaxPlanSeries',
+      success   : function(res) {
+          //var result = $.parseJSON(res);	
+          $('#planseries').val(parseInt(res)+1);
       }
   });
 }

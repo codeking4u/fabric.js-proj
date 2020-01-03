@@ -48,11 +48,11 @@
         <div class="side-controls">
           <div class='add-controls'>
             <button id="planning" class='drop-ready' data-color='#fff'>Add Planning</button>
-            <input type="text">
+            <input type="text" id="planseries" class="seriesValues" value="<?php echo (getMaxPlanSeries())+1;?>">
           </div>
           <div class="add-controls">
             <button id="hazmat" class='drop-ready' data-color='#f55'>Add Hazmat</button>
-            <input type="text">
+            <input type="text" id="hazmatseries"  class="seriesValues" >
           </div>
           <div class="save-controls">
             <button class="button" id="save_can">Save</button>

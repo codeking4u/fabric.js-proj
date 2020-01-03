@@ -53,4 +53,26 @@ function get_can(){
     echo $add;
 }
 
+function getMaxPlanSeries(){
+    global $link;
+    $sql = "SELECT MAX(series) AS maxplan FROM plan_series";
+    $result = mysqli_query($link,$sql);
+    $value = mysqli_fetch_object($result);
+    if(is_null($value->maxplan) || empty($value->maxplan)){
+        $num = '0';
+    }else{
+        $num =  $value->maxplan;
+    }
+    if(is_ajax()){
+        echo $num;
+    }else{
+        return $num;
+    }
+    exit;
+}
+
+function is_ajax(){
+    return isset($_SERVER['HTTP_X_REQUESTED_WITH']);
+  }
+
 ?>
