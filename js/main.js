@@ -11,34 +11,12 @@ var zoomMax = 23;
 window.originalWidth = 600;
 window.originalHeight = 400;
 canvas.setZoom(1);
-/* ctx = canvas.getContext("2d");
-canvas.width = 903;
-canvas.height = 657;
 
-
-var background = new Image();
-background.src = "img/img.png";
-
-// Make sure the image is loaded first otherwise nothing will draw.
-background.onload = function(){
-    ctx.drawImage(background,0,0);   
-} */
-/* var imageUrl = "img/img.png";
-
-// Define 
- canvas.setBackgroundImage(imageUrl, canvas.renderAll.bind(canvas), {
-    // Optionally add an opacity lvl to the image
-    backgroundImageOpacity: 1,
-    // should the image be resized to fit the container?
-    backgroundImageStretch: true
-}); 
-   */
- 
-  canvas.on('mouse:move', function (evt) {
-    if (window.readToDrop==true) {
-      canvas.defaultCursor = 'crosshair';
-    }
-  });
+canvas.on('mouse:move', function (evt) {
+  if (window.readToDrop==true) {
+    canvas.defaultCursor = 'crosshair';
+  }
+});
 canvas.on('mouse:down', function(options) {
   console.log(canvas.getZoom(),options.e.offsetX,options.e.offsetY)
   a = options.e.offsetX/canvas.getZoom();
@@ -47,7 +25,7 @@ canvas.on('mouse:down', function(options) {
  if (options.target.type =='image' && window.readToDrop==true) {
   var tempZoom = canvas.getZoom();
   canvas.setZoom(1);
-  var cic1 =new fabric.Circle({ radius: 20, fill: window.fillColor, top: b-10, left: a-10,stroke: 'red',
+  var cic1 =new fabric.Circle({ radius: 20, fill: window.fillColor, top: b-10, left: a-10,stroke: 'grey',
   strokeWidth: 3 });
   var number=1;
   if(canvas.getObjects().length){
@@ -55,12 +33,12 @@ canvas.on('mouse:down', function(options) {
   }
   
   var text1 = new fabric.IText(number.toString(), {
-	  fontSize: 20,
+	  fontSize: 15,
     textAlign: 'center',
         originX: 'center',
         originY: 'center',
-        left: a+10,
-        top: b+10
+        left: a+12,
+        top: b+12
 	});
   var group = new fabric.Group([ cic1,text1  ], {
 	  left: a-20,
@@ -84,6 +62,9 @@ canvas.on('mouse:down', function(options) {
       if(canvas.getActiveObject().get('type')=="group"){
         getText(grp);
       }
+    }else{
+      $('.insideContent').val('');
+      return false;
     }
     
   }
@@ -120,17 +101,28 @@ function getText(group){
   //group._restoreObjectsState();
   for (var i = 0; i < items.length; i++) {
       if(items[i].get('type')=='i-text'){
-        $('#number').val((items[i].text));
+        $('#alpha , #number').val('');
+        var s = items[i].text;
+        if (/^[a-zA-Z]/.test(s)) {
+          var splits = [s.slice(0,1), s.slice(1)];
+          $('#alpha').val(splits[0]);
+          $('#number').val(splits[1]);
+
+        }else{
+          $('#number').val(s);
+          console.log('Contains only number');
+        }
+        
       }
   }
 }
-$('#number').on('keyup',function(){
+$('.insideContent').on('keyup',function(){
   //upper-canvas 
   //var canvas = new fabric.Canvas('c');
   var grp = canvas.getActiveObject(); 
   var items = grp._objects; 
   items[1].set({
-    text: $('#number').val()
+    text: ($('.alpha').val().toUpperCase()+$('#number').val())
   });
   grp.addWithUpdate();
   canvas.renderAll();

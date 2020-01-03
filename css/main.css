@@ -64,9 +64,12 @@ header .top-main .top-texts {
 header .top-main .top-texts input {
   border: 1px solid #8C8C8C;
   background-color: #fff;
+  padding: 2px;
 }
 header .top-main .top-texts input.alpha {
   width: 45px;
+  text-align: right;
+  text-transform: capitalize;
 }
 header .top-main .top-texts input.num {
   width: 90px;
@@ -97,7 +100,7 @@ header .top-main .top-colors .colordiv.red {
   background-color: red;
 }
 header .top-main .top-colors .colordiv.green {
-  background-color: #49F57A;
+  background-color: #18cc30;
 }
 .container-x {
   width: 100%;
@@ -233,7 +236,8 @@ header .top-main .top-colors .colordiv.green {
   width: 100%;
   color: var(--primaryFont);
   margin-top: 70px;
-  padding-left: 350px;
+  padding-left: 300px;
+  padding-top: 10px;
   overflow: auto;
 }
 .container-x main.main .zbtn {

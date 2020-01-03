@@ -9,13 +9,15 @@
       <div class="top-main">
         <div class="top-texts">
             <span>Selected Value : </span>
-            <input class="alpha" type="text"><span> - </span><input id="number" class="num" type="number">
+            <input id="alpha" class="alpha insideContent" type="text" maxlength="1">
+              <span> - </span>
+            <input id="number" class="num insideContent" type="number">
         </div>
         <div class="top-colors">
             <span>Color : </span>
-            <div class="colordiv white"></div>
-            <div class="colordiv red"></div>
-            <div class="colordiv green"></div>
+            <div class="colordiv white" data-colr='#fff'></div>
+            <div class="colordiv red" data-colr='red'></div>
+            <div class="colordiv green" data-colr='#18cc30' ></div>
         </div>
         <div class="top-confirm">
           <button>Confirm</button>
