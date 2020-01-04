@@ -53,21 +53,41 @@ function get_can(){
     echo $add;
 }
 
-function getMaxPlanSeries(){
+function getMaxSeries($table){
     global $link;
-    $sql = "SELECT MAX(series) AS maxplan FROM plan_series";
+    if(isset($_REQUEST['table'])){
+        $table = $_REQUEST['table'];
+    }
+    $sql = "SELECT MAX(series) AS maxseries FROM $table";
     $result = mysqli_query($link,$sql);
     $value = mysqli_fetch_object($result);
-    if(is_null($value->maxplan) || empty($value->maxplan)){
+    if(is_null($value->maxseries) || empty($value->maxseries)){
         $num = '0';
     }else{
-        $num =  $value->maxplan;
+        $num =  $value->maxseries;
     }
     if(is_ajax()){
         echo $num;
     }else{
         return $num;
     }
+    exit;
+}
+function addNewNumber(){
+    global $link;
+    if($_POST['type']=="plan_series"){
+        $table = "plan_series";
+    }
+    if($_POST['type']=="hazmat_series"){
+        $table = "hazmat_series";
+    }
+    $num = $_POST['number'];
+    if($table){
+        $sql = "INSERT INTO $table ( `series`) VALUES ($num)";
+        $result = mysqli_query($link, $sql);
+        echo getMaxSeries($table);
+    }
+    
     exit;
 }
 

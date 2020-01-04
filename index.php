@@ -16,7 +16,7 @@
         <div class="top-colors">
             <span>Color : </span>
             <div class="colordiv white" data-color='#fff'></div>
-            <div class="colordiv red" data-color='red'></div>
+            <div class="colordiv red" data-color='#f55'></div>
             <div class="colordiv green" data-color='#18cc30' ></div>
         </div>
         <div class="top-confirm">
@@ -48,11 +48,11 @@
         <div class="side-controls">
           <div class='add-controls'>
             <button id="planning" class='drop-ready' data-color='#fff'>Add Planning</button>
-            <input type="text" id="planseries" class="seriesValues" value="<?php echo (getMaxPlanSeries())+1;?>">
+            <input type="text" id="planseries" class="seriesValues" value="<?php echo (getMaxSeries('plan_series'))+1;?>">
           </div>
           <div class="add-controls">
             <button id="hazmat" class='drop-ready' data-color='#f55'>Add Hazmat</button>
-            <input type="text" id="hazmatseries"  class="seriesValues" >
+            <input type="text" id="hazmatseries"  class="seriesValues" value="<?php echo (getMaxSeries('hazmat_series'))+1;?>">
           </div>
           <div class="save-controls">
             <button class="button" id="save_can">Save</button>

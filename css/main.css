@@ -101,7 +101,7 @@ header .top-main .top-colors .colordiv.white:hover {
   border: 1px solid black;
 }
 header .top-main .top-colors .colordiv.red {
-  background-color: red;
+  background-color: #f55;
 }
 header .top-main .top-colors .colordiv.red:hover {
   border: 1px solid black;

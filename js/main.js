@@ -18,21 +18,29 @@ canvas.on('mouse:move', function (evt) {
   }
 });
 canvas.on('mouse:down', function(options) {
-  console.log(canvas.getZoom(),options.e.offsetX,options.e.offsetY)
   a = options.e.offsetX/canvas.getZoom();
   b = options.e.offsetY/canvas.getZoom();
-  console.log(canvas.getZoom(),a,b)
  if (options.target.type =='image' && window.readToDrop==true) {
   var tempZoom = canvas.getZoom();
   canvas.setZoom(1);
   var cic1 =new fabric.Circle({ radius: 20, fill: window.fillColor, top: b-10, left: a-10,stroke: 'black',
   strokeWidth: 3 });
+
   var number=1;
   if(canvas.getObjects().length){
-     number =canvas.getObjects().length+1;
+     number =canvas.getObjects().length;
   }
-  
-  var text1 = new fabric.IText(number.toString(), {
+  if($('#planning').hasClass('active')){
+    number = ($('#planseries').val()) ? $('#planseries').val() : number;
+    addNewNumber(number,'plan_series');
+    $('.alpha').val('P');
+  }else{
+    number = ($('#hazmatseries').val()) ? $('#hazmatseries').val() : number;
+    addNewNumber(number,'hazmat_series');
+    $('.alpha').val('H');
+  }
+  var insideValue = $('.alpha').val()+number;
+  var text1 = new fabric.IText(insideValue.toString(), {
 	  fontSize: 15,
     textAlign: 'center',
         originX: 'center',
@@ -46,7 +54,6 @@ canvas.on('mouse:down', function(options) {
   });
   $('#number').val(number.toString());
   canvas.add(group);
-  getMaxPlanSeries();
   canvas.setZoom(tempZoom);
   canvas.item(canvas.getObjects().length-1).set({
     borderColor: 'red',
@@ -67,10 +74,7 @@ canvas.on('mouse:down', function(options) {
       $('.insideContent').val('');
       return false;
     }
-    
-  }
-  
-  
+  } 
 });
 
 $('#delete_selected').click(function(e){
@@ -119,7 +123,6 @@ function getText(group){
 }
 $('.insideContent').on('keyup',function(){
   //upper-canvas 
-  //var canvas = new fabric.Canvas('c');
   var grp = canvas.getActiveObject(); 
   var items = grp._objects; 
   items[1].set({
@@ -160,13 +163,36 @@ function load_can(){
       }
   });
 }
-function getMaxPlanSeries(){
+function addNewNumber(number,type){
   $.ajax({ 
       type      : 'POST',
-      url       : 'function.php?action=getMaxPlanSeries',
+      url       : 'function.php?action=addNewNumber',
+      data      : {number : number , type : type},
       success   : function(res) {
-          //var result = $.parseJSON(res);	
-          $('#planseries').val(parseInt(res)+1);
+        	
+          if(type == 'plan_series'){
+            $('#planseries').val(parseInt(res)+1);
+          }	
+          if(type == 'hazmat_series'){
+            $('#hazmatseries').val(parseInt(res)+1);
+          }
+          
+      }
+  });
+}
+function getMaxSeries(type){
+  $.ajax({ 
+      type      : 'POST',
+      url       : 'function.php?action=getMaxSeries',
+      data      : {table : type},
+      success   : function(res) {
+          //var result = $.parseJSON(res);
+          if(type == 'plan_series'){
+            $('#planseries').val(parseInt(res)+1);
+          }	
+          if(type == 'hazmat_series'){
+            $('#hazmatseries').val(parseInt(res)+1);
+          }
       }
   });
 }
@@ -202,19 +228,14 @@ $(document).on('click','.datajson',function(e){
       $('.canvas-container canvas').attr('data-originalHeight',object.height);
       canvas.renderAll();
     })
-    
-      
     }else{
-    
-      if (typeof dataurl !== typeof undefined && dataurl !== false) {
-        addImage(dataurl);
-      }
-     
-     }
-////////////////
-
-  
-  canvas.renderAll();
+      
+        if (typeof dataurl !== typeof undefined && dataurl !== false) {
+          addImage(dataurl);
+        }
+      
+    }
+    canvas.renderAll();
 });
 
 $(document).ready(function(){
@@ -230,6 +251,7 @@ $(document).ready(function(){
     $(this).addClass('active');
     window.readToDrop = true;
     window.fillColor = $(this).attr('data-color');
+    
   });
   $('.zoom').click(function(){
     zoomIn()
@@ -239,17 +261,6 @@ $(document).ready(function(){
   });
   $('.zoom-out').click(function(){
     zoomOut();
-
-    /* getFabricCanvases().forEach(function(elementValue) {
-        var currentTop = Number(elementValue.css("top").replace(/[^\d\.\-]/g, '') );
-        var currentLeft = Number(elementValue.css("left").replace(/[^\d\.\-]/g, '') );
-
-        currentTop = zoomCalcYpos(currentTop);
-        currentLeft = zoomCalcXpos(currentLeft);
-
-        elementValue.css("top", currentTop);
-        elementValue.css("left", currentLeft);
-    }); */
   
   });
 
