@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html>
     <head> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
        <link rel="stylesheet" href="./css/main.css">
        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
@@ -20,7 +22,7 @@
             <div class="colordiv green" data-color='#18cc30' ></div>
         </div>
         <div class="top-confirm">
-          <button>Confirm</button>
+          <!--button>Confirm</button-->
           <a href="#" id="delete_selected">
             <span class="glyphicon glyphicon-trash"></span>
           </a>

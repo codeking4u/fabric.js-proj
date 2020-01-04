@@ -20,36 +20,20 @@ function save_can(){
 function get_can(){
     global $link;
     //echo 'sda';exit;
-    $cans_query = 'select canvasjson,ID from can_backup';
+    $cans_query = 'select canvasjson,ID,imageurl from can_backup';
     $result = mysqli_query($link, $cans_query);
     $i=1;
     $add ="";
     while($row = $result->fetch_assoc()){
           ;
           
-        $add.= "<li class='datajson' data-json='".$row['canvasjson']."'data-id='".$row['ID']."'><img src='https://homepages.cae.wisc.edu/~ece533/images/mountain.png' alt='plan' style='width: 25px;
+        $add.= "<li class='datajson' data-json='".$row['canvasjson']."' data-id='".$row['ID']."' data-url='".$row['imageurl']."'><img src='".$row['imageurl']."' alt='plan' style='width: 25px;
         height: 25px;
         padding: 0;
         margin-right: 10px;'><span>Plan ".$i."</span></li>";
         $i++;
     }
-    $add.= "<li class='datajson' data-id='".$row['ID']."' data-url='https://dummyimage.com/600x400/000/fff'><img src='https://dummyimage.com/600x400/000/fff' alt='plan' style='width: 25px;
-        height: 25px;
-        padding: 0;
-        margin-right: 10px;'><span>600x400</span></li>";
-
-    $add.= "<li class='datajson' data-id='".$row['ID']."' data-url='https://dummyimage.com/1200x400/000/fff'><img src='https://dummyimage.com/1200x400/000/fff' alt='plan' style='width: 25px;
-        height: 25px;
-        padding: 0;
-        margin-right: 10px;'><span>1200x400</span></li>";
-    $add.= "<li class='datajson' data-id='".$row['ID']."' data-url='https://dummyimage.com/400x1200/000/fff'><img src='https://dummyimage.com/400x1200/000/fff' alt='plan' style='width: 25px;
-        height: 25px;
-        padding: 0;
-        margin-right: 10px;'><span>400x1200</span></li>";
-    $add.= "<li class='datajson' data-id='".$row['ID']."' data-url='https://dummyimage.com/400x1500/000/fff'><img src='https://dummyimage.com/400x1500/000/fff' alt='plan' style='width: 25px;
-        height: 25px;
-        padding: 0;
-        margin-right: 10px;'><span>400x1200</span></li>";
+    
     echo $add;
 }
 

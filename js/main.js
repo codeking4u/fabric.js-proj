@@ -2,7 +2,7 @@ window.canvas = new fabric.Canvas('c',{cursor:'cross-hair'});
 canvas.selection = false;
 window.readToDrop = false;
 window.fillColor = '#fff';
-window.fullwidth = parseFloat($('main.main').width())-300;
+window.fullwidth = parseFloat($('main.main').width());
 window.fullheight = $('main.main').height();
 window.max_w_pos = fullwidth - 50;
 fabric.Object.NUM_FRACTION_DIGITS = 17;
@@ -23,6 +23,7 @@ canvas.on('mouse:down', function(options) {
  if (options.target.type =='image' && window.readToDrop==true) {
   var tempZoom = canvas.getZoom();
   canvas.setZoom(1);
+  $('header').slideDown();
   var cic1 =new fabric.Circle({ radius: 20, fill: window.fillColor, top: b-10, left: a-10,stroke: 'black',
   strokeWidth: 3 });
 
@@ -68,6 +69,7 @@ canvas.on('mouse:down', function(options) {
     if (options.target !=undefined && options.target.selectable!= false){
       var grp = canvas.getActiveObject(); 
       if(canvas.getActiveObject().get('type')=="group"){
+        $('header').slideDown();
         getText(grp);
       }
     }else{
@@ -124,13 +126,14 @@ function getText(group){
 $('.insideContent').on('keyup',function(){
   //upper-canvas 
   var grp = canvas.getActiveObject(); 
-  var items = grp._objects; 
-  items[1].set({
-    text: ($('.alpha').val().toUpperCase()+$('#number').val())
-  });
-  grp.addWithUpdate();
-  canvas.renderAll();
-
+  if(grp){
+    var items = grp._objects; 
+    items[1].set({
+      text: ($('.alpha').val().toUpperCase()+$('#number').val())
+    });
+    grp.addWithUpdate();
+    canvas.renderAll();
+  }
   
 });
 function save_can(json,type){
@@ -203,11 +206,9 @@ $(document).on('click','.datajson',function(e){
   var json= $(this).attr('data-json');
   var id= $(this).attr('data-id');
   var dataurl= $(this).attr('data-url');
-  
-    if (typeof json !== typeof undefined && json !== false) {
-    console.log('jsonnn');
+    if (typeof json !== typeof undefined && json !== false && json!="" && typeof JSON.parse(json)  == 'object') {
     canvas.clear();
-    
+    console.log('json');
     canvas.loadFromJSON(json, function() {
         canvas.renderAll.bind(canvas) 
     },function(o,object){
@@ -229,7 +230,8 @@ $(document).on('click','.datajson',function(e){
       canvas.renderAll();
     })
     }else{
-      
+        
+        canvas.clear();
         if (typeof dataurl !== typeof undefined && dataurl !== false) {
           addImage(dataurl);
         }
@@ -342,26 +344,29 @@ function zoomOut2 (){
   canvas.renderAll();
 } 
 function addImage(url){
+  console.log(url);
   fabric.Image.fromURL(url, function(myImg) {
    var final_width = myImg.width;
    var final_height = myImg.height;
    var imageRatio = myImg.width/myImg.height;
-   
+   console.log(final_width,final_height,'first',imageRatio)
    if(myImg.width>window.fullwidth){
-   	final_width = max_w_pos
+   	//final_width = max_w_pos
     final_height = final_width/ imageRatio;
     console.log(final_width,final_height)
    }else{
    
    }
-   var myImg = myImg.set({ left: 0, top: 0 ,width:final_width,height:final_height,selectable: false});
+   
+   
+    canvas.setDimensions({width:final_width, height:final_height});
+    $('.canvas-container canvas').attr('data-originalWidth',final_width);
+    $('.canvas-container canvas').attr('data-originalHeight',final_height);
+
+    var myImg = myImg.set({ left: 0, top: 0 ,width:final_width,height:final_height,selectable: false});
    myImg.hoverCursor = 'default';
    console.log('img.width'+myImg.width,'can.width'+canvas.width);
    canvas.add(myImg); 
-   
-   canvas.setDimensions({width:final_width, height:final_height});
-   $('.canvas-container canvas').attr('data-originalWidth',final_width);
-      $('.canvas-container canvas').attr('data-originalHeight',final_height);
   });
 }
 function resetZoom() {

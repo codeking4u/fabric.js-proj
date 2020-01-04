@@ -44,13 +44,15 @@ body {
   overflow: hidden;
 }
 header {
-  margin: 10 5 0 0;
+  margin-top: 12px;
+  margin-right: 5px;
   height: 50px;
   background-color: #DADADA;
   position: fixed;
   margin-left: 310px;
   z-index: 9999;
   width: 100%;
+  display: none;
 }
 header .top-main {
   display: flex;
@@ -76,7 +78,7 @@ header .top-main .top-texts input.num {
 }
 header .top-main .top-confirm {
   width: 15%;
-  display: flex;
+  display: inline-block;
   justify-content: space-evenly;
 }
 header .top-main .top-confirm a {
@@ -85,9 +87,13 @@ header .top-main .top-confirm a {
   padding: 7px;
 }
 header .top-main .top-colors {
-  width: 20%;
+  width: 15%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-evenly;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 header .top-main .top-colors .colordiv {
   width: 25px;
@@ -148,6 +154,7 @@ header .top-main .top-colors .colordiv.green:hover {
 .container-x nav.main ul.nav-container {
   overflow: auto;
   list-style-type: none;
+  padding: 0;
 }
 .container-x nav.main li.nav-item {
   overflow: hidden;
@@ -190,9 +197,6 @@ header .top-main .top-colors .colordiv.green:hover {
 .container-x nav.main li.nav-item:first-of-type span {
   border-top: none;
 }
-.container-x nav.main li.nav-item:last-of-type span {
-  border-bottom: 1px solid var(--secondaryBorder);
-}
 .container-x nav.main li.nav-item:first-of-type span::before {
   border-color: green;
 }
@@ -206,6 +210,8 @@ header .top-main .top-colors .colordiv.green:hover {
   transition-property: max-height, opacity;
   opacity: 0;
   list-style-type: none;
+  padding: 0;
+  background: #DADADA;
 }
 .container-x nav.main li.nav-item ul.subnav a {
   display: block;
@@ -219,6 +225,11 @@ header .top-main .top-colors .colordiv.green:hover {
   background: var(--secondary);
 }
 .container-x nav.main li.nav-item ul.subnav li {
+  color: #000;
+  background: #FCFAFA;
+  margin: 7px;
+  padding: 7px;
+  cursor: pointer;
   /* a::before {
                         content: '';
                         position: absolute;
@@ -229,6 +240,13 @@ header .top-main .top-colors .colordiv.green:hover {
                         top: 50%;
                         transform: translateY(-50%);
                     } */
+}
+.container-x nav.main li.nav-item ul.subnav li:hover {
+  background: #f0efef;
+}
+.container-x nav.main li.nav-item ul.subnav li.active {
+  background: #faae8a;
+  font-size: 700;
 }
 .container-x nav.main li.nav-item.open span.ship {
   border-bottom: 1px solid var(--secondaryBorder);

@@ -48,15 +48,17 @@ body {
     overflow: hidden;
    // background-image: linear-gradient(to bottom, $gradientStep1, $gradientStep2, $gradientStep3, $gradientStep4);
 }
+
 header{
-    margin:10 5 0 0;
+    margin-top :12px;
+    margin-right :5px;
     height: 50px;
     background-color: #DADADA;
     position: fixed;
     margin-left: 310px; 
     z-index: 9999;
     width: 100%;
-
+    display: none;
     .top-main{
         display: flex;
         flex-wrap: nowrap;
@@ -80,7 +82,7 @@ header{
         }
         .top-confirm{
             width: 15%;
-            display: flex;
+            display: inline-block;
             justify-content: space-evenly;
             a{
                 font-size: 19px;
@@ -90,9 +92,13 @@ header{
         }
 
         .top-colors{
-            width: 20%;
-            display: flex;
-            justify-content: space-evenly;
+            width: 15%;
+            display : -webkit-box;
+            display : -ms-flexbox;
+            display : flex;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
             .colordiv{
                 width: 25px;
                 height: 25px;
@@ -157,6 +163,7 @@ header{
         ul.nav-container {
             overflow: auto;
             list-style-type:none; 
+            padding: 0;
         }
 
         li.nav-item {
@@ -206,7 +213,7 @@ header{
                 border-top: none;
             }
             &:last-of-type span {
-                border-bottom: 1px solid var(--secondaryBorder);
+                //border-bottom: 1px solid var(--secondaryBorder);
             }
             &:first-of-type {
                 span::before {
@@ -225,7 +232,8 @@ header{
                 transition-property: max-height, opacity;
                 opacity: 0;
                 list-style-type:none;
-
+                padding: 0;
+                background: #DADADA;
                 a {
                     display: block;
                     width: 100%;
@@ -240,6 +248,14 @@ header{
                 }
 
                 li {
+                    color: #000;
+                    background: #FCFAFA;
+                    margin: 7px;
+                    padding: 7px;
+                    cursor: pointer;
+                    &:hover{
+                        background: rgb(240, 239, 239);
+                    }
                     /* a::before {
                         content: '';
                         position: absolute;
@@ -250,6 +266,10 @@ header{
                         top: 50%;
                         transform: translateY(-50%);
                     } */
+                    &.active{
+                        background: #faae8a;
+                        font-size: 700;
+                    }
                 }
             }
 
