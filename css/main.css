@@ -42,6 +42,7 @@ body {
 body {
   display: flex;
   overflow: hidden;
+  background: #868282;
 }
 header {
   margin-top: 12px;

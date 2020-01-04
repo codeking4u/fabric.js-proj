@@ -446,7 +446,7 @@ function zoomIn() {
 
 // Zoom Out
 function zoomOut() {
-  if( canvas.getZoom().toFixed(5) <=1 ){
+  if( canvas.getZoom().toFixed(5) <=0.5 ){
       console.log("zoomOut: Error: cannot zoom-out anymore");
       return;
   }
